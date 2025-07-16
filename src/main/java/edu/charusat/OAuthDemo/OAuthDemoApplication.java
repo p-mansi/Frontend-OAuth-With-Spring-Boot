@@ -1,13 +1,13 @@
-package edu.charusat.BookMyResource;
+package edu.charusat.OAuthDemo;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class BookMyResourceApplication {
+public class OAuthDemoApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(BookMyResourceApplication.class, args);
+		SpringApplication.run(OAuthDemoApplication.class, args);
 	}
 
 }
