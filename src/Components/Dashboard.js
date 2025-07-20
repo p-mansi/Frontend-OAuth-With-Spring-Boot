@@ -21,6 +21,7 @@ const Dashboard = () => {
                 <div>
                     <p><strong>Name : </strong> {user.name}</p>
                     <p><strong>Email : </strong> {user.email}</p>
+                    <img src={user.picture} referrerPolicy="no-referrer" alt='Picture'></img>
                 </div>
             ) : (
                 <p>Loading User Data...</p>
