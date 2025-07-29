@@ -13,14 +13,29 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableMethodSecurity
 public class SecurityConfig {
 
-    @Bean
-    SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
+        private final CustomOAuth2UserService customOAuth2UserService;
 
-        http.csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(authorizeRequests -> authorizeRequests.anyRequest().authenticated())
-                // .formLogin(form -> form.defaultSuccessUrl("/hello", true));
-                .oauth2Login(oauth2 -> oauth2.defaultSuccessUrl("http://localhost:3000/dashboard", true));
+        public SecurityConfig(CustomOAuth2UserService customOAuth2UserService) {
+                System.out.println("✅ SecurityConfig constructor initialized");
+                this.customOAuth2UserService = customOAuth2UserService;
+        }
 
-        return http.build();
-    }
+        @Bean
+        public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
+                http
+                                .csrf(AbstractHttpConfigurer::disable)
+                                .authorizeHttpRequests(auth -> auth
+                                                .requestMatchers("/user-info").permitAll()
+                                                .anyRequest().authenticated())
+                                .oauth2Login(oauth2 -> oauth2
+                                                .userInfoEndpoint(userInfo -> {
+                                                        System.out.println(
+                                                                        "✅ CustomOAuth2UserService is being registered with Spring Security");
+                                                        userInfo.userService(customOAuth2UserService);
+                                                })
+                                                .defaultSuccessUrl("http://localhost:3000/dashboard", true));
+
+                return http.build();
+        }
+
 }
